@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# Next build
+.next
+
+# OSX
+.DS_Store

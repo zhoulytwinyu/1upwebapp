@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { logout, logoutEvent } from '../utils'
 
 export default class Header extends React.Component {
@@ -15,7 +16,10 @@ export default class Header extends React.Component {
   render () {
     return (
       <div>
-        <Link href='/'>home</Link>
+        <Head>
+          <link rel='stylesheet' href='/static/styles.css' />
+        </Head>
+        <Link href='/'>1upDemo</Link>&nbsp;
         <strong>{
           typeof this.props.user === 'undefined' ?
           <Link href='/login'>Login</Link> :

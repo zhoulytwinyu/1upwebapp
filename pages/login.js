@@ -1,5 +1,6 @@
 import React from 'react'
 import 'isomorphic-fetch'
+import Header from '../components/header.js'
 
 export default class Login extends React.Component {
 
@@ -32,34 +33,45 @@ export default class Login extends React.Component {
     })
   }
 
+  welcomeText = () => {
+    return (
+      <div style={{width: '400px', display: 'inline-block', textAlign: 'left'}}>
+        Welcome to the <a href='https://1up.health'>1upHealth</a> Demo App. You can sign in, connect your health systems, and view your medical record. Learn more about the tech behind this app in the <a href='https://github.com/1uphealth/1upwebapp'>git repo</a>.
+      </div>
+    )
+  }
+
   render () {
     if (this.state.submitted) {
       return (
-        <div>
-          <h3>We sent a magic link to your account :)</h3>
-          <style jsx>{`
-            div {
-              text-align: center;
-              margin-top: 200px;
-            }
-          `}</style>
+        <div className="cent">
+          <Header />
+          <br/>
+          <br/>
+          {this.welcomeText()}
+          <br/>
+          <br/>
+          <br/>
+          <h3>Check your email. <br/>We sent a magic link to log into your account :)</h3>
         </div>
       )
     }
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <h3>Login using your email :)</h3>
-        <input onChange={this.onEmailChange} value={this.state.email}
-          type='email' required placeholder='your@email.org' autoFocus />
-        <input type='submit' value='Login' />
-        <style jsx>{`
-          form {
-            text-align: center;
-            margin-top: 200px;
-          }
-        `}</style>
-      </form>
+      <div className="cent">
+        <form onSubmit={this.onSubmit}>
+          <Header />
+          <br/>
+          <br/>
+          {this.welcomeText()}
+          <br/>
+          <br/>
+          <h3>Login using your email :)</h3>
+          <input onChange={this.onEmailChange} value={this.state.email}
+            type='email' required placeholder='your@email.org' autoFocus />
+          <input type='submit' value='Login' />
+        </form>
+      </div>
     )
   }
 }

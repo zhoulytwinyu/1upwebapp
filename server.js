@@ -13,9 +13,19 @@ const handle = app.getRequestHandler()
 function authUser(req, res, next) {
   if( typeof req.session !== 'undefined'
       && Object.keys(req.session).length > 0
-      && typeof req.session.passwordless !== 'undefined') {
+      && typeof req.session.passwordless !== 'undefined'
+      || typeof req.headers.authorization != 'undefined') {
     req.session.oneup_access_token = oneup.accessTokenCache[req.session.passwordless]
-    next()
+    if(typeof req.session.oneup_access_token === 'undefined') {
+      if (typeof req.headers.authorization === 'undefined') {
+        res.redirect('/login')
+      } else {
+        req.session.oneup_access_token = req.headers.authorization.split(' ')[1]
+        next()
+      }
+    } else {
+      next()
+    }
   } else {
     res.redirect('/login')
   }
@@ -55,8 +65,21 @@ app.prepare()
     res.json('ok');
   })
 
+  server.get('/callback', authUser, (req, res) => {
+    res.redirect('/timeline')
+  })
+
   server.get('/timeline', authUser, (req, res) => {
     app.render(req, res, '/timeline', req.params)
+  })
+
+  // we suggest bundling your requests to the 1uphealth api on the backend
+  // and presenting them to the frontend via your own api routes
+  server.get('/api/timeline', authUser, (req, res) => {
+    console.log(req.session)
+    console.log(req.headers)
+    console.log(req.header)
+    res.send({token: req.session.oneup_access_token || req.headers.authorization.split(' ')[1]})
   })
 
   server.get('/', authUser, (req, res) => {

@@ -19,7 +19,8 @@ export const logoutEvent = (eve, url) => {
 
 export const logout = () => {
   console.log('clearinglocalstorage')
-  window.localStorage.removeItem('user')
+  window.localStorage.removeItem('email')
+  window.localStorage.removeItem('oneup_access_token')
   window.localStorage.setItem('logout', new Date())
   window.fetch('/logout', { method: 'POST' })
   Router.push('/logout')
@@ -27,7 +28,9 @@ export const logout = () => {
 
 const getAuthUser = () => {
   try {
-    return window.localStorage.getItem('user')
+    return {
+      email: window.localStorage.getItem('email'),
+      oneup_access_token: window.localStorage.getItem('oneup_access_token')}
   } catch (err) {
     return null
   }

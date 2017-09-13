@@ -8,6 +8,18 @@ export default class Timeline extends React.Component {
     return { user }
   }
 
+  componentDidMount () {
+    if (this.props.user) {
+      try {
+        window.localStorage.setItem('email', this.props.user.email)
+        window.localStorage.setItem('oneup_access_token', this.props.user.oneup_access_token)
+      } catch (err) {}
+    } else {
+      window.localStorage.remove('email')
+      window.localStorage.remove('oneup_access_token')
+    }
+  }
+
   render () {
     return (
       <div>

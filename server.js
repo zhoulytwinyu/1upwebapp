@@ -10,6 +10,17 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dir: '.', dev })
 const handle = app.getRequestHandler()
 
+function authUser(req, res, next) {
+  if( typeof req.session !== 'undefined'
+      && Object.keys(req.session).length > 0
+      && typeof req.session.passwordless !== 'undefined') {
+    req.session.oneup_access_token = oneup.accessTokenCache[req.session.passwordless]
+    next()
+  } else {
+    res.redirect('/login')
+  }
+}
+
 app.prepare()
 .then(() => {
   const server = express()
@@ -44,16 +55,12 @@ app.prepare()
     res.json('ok');
   })
 
-  server.get('/', (req, res) => {
-    console.log(req.session)
-    if( typeof req.session !== 'undefined'
-        && Object.keys(req.session).length > 0
-        && typeof req.session.passwordless !== 'undefined') {
-      req.session.oneup_access_token = oneup.accessTokenCache[req.session.passwordless]
-      app.render(req, res, '/index', req.params)
-    } else {
-      res.redirect('/login')
-    }
+  server.get('/timeline', authUser, (req, res) => {
+    app.render(req, res, '/timeline', req.params)
+  })
+
+  server.get('/', authUser, (req, res) => {
+    app.render(req, res, '/index', req.params)
   })
 
   server.get('*', (req, res) => handle(req, res))

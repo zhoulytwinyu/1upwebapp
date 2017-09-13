@@ -22,13 +22,14 @@ export default class Home extends React.Component {
   componentDidMount () {
     if (this.props.user) {
       try {
-        window.localStorage.setItem('user', this.props.user)
+        window.localStorage.setItem('email', this.props.user.email)
+        window.localStorage.setItem('oneup_access_token', this.props.user.oneup_access_token)
       } catch (err) {}
     } else {
-      window.localStorage.remove('user')
+      window.localStorage.remove('email')
+      window.localStorage.remove('oneup_access_token')
     }
   }
-
 
   render () {
     return (

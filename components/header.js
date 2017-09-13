@@ -23,7 +23,7 @@ export default class Header extends React.Component {
         <strong>{
           typeof this.props.user === 'undefined' ?
           <Link href='/login'>Login</Link> :
-          (<span><span>{this.props.user}</span> <a href='/logout' onClick={logout}>logout</a></span>)}</strong>
+          (<span><span>{this.props.user.email}</span> <a href='/logout' onClick={logout}>logout</a></span>)}</strong>
       </div>
     )
   }

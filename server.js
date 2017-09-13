@@ -1,8 +1,10 @@
 const express = require('express')
-const session = require('express-session')
+// const session = require('express-session')
+const cookieSession = require('cookie-session')
 const bodyParser = require('body-parser')
 const next = require('next')
 const auth = require('./auth')
+const oneup = require('./oneup')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dir: '.', dev })
@@ -11,9 +13,14 @@ const handle = app.getRequestHandler()
 app.prepare()
 .then(() => {
   const server = express()
-
   server.use(bodyParser.json())
-  server.use(session({ secret: 'Roar!', resave: false, saveUninitialized: true }))
+
+  server.use(cookieSession({
+    name: 'demoappsession',
+    keys: ['Woof','Meow','Cluck'], // you should change these
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }))
+  // server.use(session({ secret: 'Roar!', resave: false, saveUninitialized: true }))
   server.use(auth.sessionSupport())
   server.use(auth.acceptToken({ successRedirect: '/' }))
 
@@ -23,14 +30,28 @@ app.prepare()
   server.get('/me', (req, res) => res.json(req.user || null))
 
   server.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-      res.redirect('/')
-    })
+    req.session = null
+    res.redirect('/')
   })
+  // server.get('/logout', (req, res) => {
+  //   req.session.destroy(() => {
+  //     res.redirect('/')
+  //   })
+  // })
   server.post('/logout', (req, res) => req.session.destroy(() => {
     req.user = null;
     res.json('ok');
   }))
+
+  server.get('/', (req, res) => {
+    console.log(req.session)
+    if( typeof req.session !== 'undefined'
+        && Object.keys(req.session).length > 0
+        && typeof req.session.passwordless !== 'undefined') {
+      req.session.oneup_access_token = oneup.accessTokenCache[req.session.passwordless]
+    }
+    app.render(req, res, '/index', req.params)
+  })
 
   server.get('*', (req, res) => handle(req, res))
 

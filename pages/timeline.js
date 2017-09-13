@@ -12,7 +12,7 @@ export default class Timeline extends React.Component {
     return (
       <div>
         <Header user={this.props.user} />
-        <p>This is your timeline <strong>{this.props.user}</strong></p>
+        <p>This is your timeline <strong>{this.props.user.email}</strong></p>
         <style jsx>{`
           div {
             text-align: center;

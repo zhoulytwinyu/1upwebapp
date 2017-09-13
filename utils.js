@@ -2,7 +2,7 @@ import Router from 'next/router'
 import 'isomorphic-fetch'
 
 export const authenticate = async (req, res) => {
-  const user = req ? req.user : getAuthUser()
+  const user = req ? {email: req.user, oneup_access_token: req.session.oneup_access_token} : getAuthUser()
   if (user) {
     return user
   } else {

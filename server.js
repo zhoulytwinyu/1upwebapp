@@ -31,17 +31,18 @@ app.prepare()
 
   server.get('/logout', (req, res) => {
     req.session = null
-    res.redirect('/')
+    res.redirect('/login')
   })
   // server.get('/logout', (req, res) => {
   //   req.session.destroy(() => {
   //     res.redirect('/')
   //   })
   // })
-  server.post('/logout', (req, res) => req.session.destroy(() => {
+  server.post('/logout', (req, res) => {
+    req.session = null;
     req.user = null;
     res.json('ok');
-  }))
+  })
 
   server.get('/', (req, res) => {
     console.log(req.session)
@@ -49,8 +50,10 @@ app.prepare()
         && Object.keys(req.session).length > 0
         && typeof req.session.passwordless !== 'undefined') {
       req.session.oneup_access_token = oneup.accessTokenCache[req.session.passwordless]
+      app.render(req, res, '/index', req.params)
+    } else {
+      res.redirect('/login')
     }
-    app.render(req, res, '/index', req.params)
   })
 
   server.get('*', (req, res) => handle(req, res))

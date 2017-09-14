@@ -42,7 +42,7 @@ export default class Home extends React.Component {
           src={`https://api.1up.health/connect/marketplace?client_id=${config.clientId}&access_token=${this.props.user.oneup_access_token}`}
           height={500}
           width='100%'/>
-        <Link href='/timeline'>Go to your medical timeline</Link>
+        <Link href='/dashboard'>Go to your medical dashboard</Link>
         <style jsx>{`
           div {
             text-align: center;

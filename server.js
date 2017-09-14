@@ -66,16 +66,16 @@ app.prepare()
   })
 
   server.get('/callback', authUser, (req, res) => {
-    res.redirect('/timeline')
+    res.redirect('/dashboard')
   })
 
-  server.get('/timeline', authUser, (req, res) => {
-    app.render(req, res, '/timeline', req.params)
+  server.get('/dashboard', authUser, (req, res) => {
+    app.render(req, res, '/dashboard', req.params)
   })
 
   // we suggest bundling your requests to the 1uphealth api on the backend
   // and presenting them to the frontend via your own api routes
-  server.get('/api/timeline', authUser, (req, res) => {
+  server.get('/api/dashboard', authUser, (req, res) => {
     var oneupAccessToken = req.session.oneup_access_token || req.headers.authorization.split(' ')[1]
     oneup.getAllFhirResourceBundles(oneupAccessToken, function(responseData){
       res.send({token: oneupAccessToken, resources: responseData})

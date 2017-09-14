@@ -9,13 +9,13 @@ npm run dev
 ```
 Run the email server
 ```
-sudo python -m smtpd -n -c DebuggingServer lochost:25
+sudo python -m smtpd -n -c DebuggingServer localhost:25
 ```
 
 ## Setup email
 Either run a test local server for development
 ```
-sudo python -m smtpd -n -c DebuggingServer lochost:25
+sudo python -m smtpd -n -c DebuggingServer localhost:25
 ```
 Or setup email js for production in `auth.js`
 ```

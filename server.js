@@ -76,10 +76,10 @@ app.prepare()
   // we suggest bundling your requests to the 1uphealth api on the backend
   // and presenting them to the frontend via your own api routes
   server.get('/api/timeline', authUser, (req, res) => {
-    console.log(req.session)
-    console.log(req.headers)
-    console.log(req.header)
-    res.send({token: req.session.oneup_access_token || req.headers.authorization.split(' ')[1]})
+    var oneupAccessToken = req.session.oneup_access_token || req.headers.authorization.split(' ')[1]
+    oneup.getAllFhirResourceBundles(oneupAccessToken, function(responseData){
+      res.send({token: oneupAccessToken, resources: responseData})
+    })
   })
 
   server.get('/', authUser, (req, res) => {

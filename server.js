@@ -43,7 +43,7 @@ app.prepare()
   }))
   // server.use(session({ secret: 'Roar!', resave: false, saveUninitialized: true }))
   server.use(auth.sessionSupport())
-  server.use(auth.acceptToken({ successRedirect: '/' }))
+  server.use(auth.acceptToken({ successRedirect: '/dashboard' }))
 
   server.post('/sendtoken', auth.requestToken((email, delivery, fn) =>
   fn(null, email)), (req, res) => res.json('ok'))
@@ -54,11 +54,7 @@ app.prepare()
     req.session = null
     res.redirect('/login')
   })
-  // server.get('/logout', (req, res) => {
-  //   req.session.destroy(() => {
-  //     res.redirect('/')
-  //   })
-  // })
+
   server.post('/logout', (req, res) => {
     req.session = null;
     req.user = null;

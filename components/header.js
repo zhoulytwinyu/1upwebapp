@@ -19,7 +19,7 @@ export default class Header extends React.Component {
         <Head>
           <link rel='stylesheet' href='/static/styles.css' />
         </Head>
-        <Link href='/'>1upDemo</Link>&nbsp;
+        <Link href='/'>Connect Data</Link>&nbsp;
         <strong>{
           typeof this.props.user === 'undefined' ?
           <Link href='/login'>Login</Link> :

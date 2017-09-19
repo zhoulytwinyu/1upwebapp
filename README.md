@@ -2,6 +2,12 @@
 Example web application built using 1upHealth FHIR, User &amp; Connect APIs
 
 ## Quickstart
+Add your API keys
+```
+export ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET="clientsecretclientsecret"
+export ONEUP_DEMOWEBAPPLOCAL_CLIENTID="clientidclientid"
+```
+
 Run the app
 ```
 npm install

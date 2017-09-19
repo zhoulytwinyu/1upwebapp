@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import fetch from 'isomorphic-fetch'
 import { authenticate, logout, logoutEvent } from '../utils'
 import Header from '../components/header.js'
@@ -56,6 +57,17 @@ export default class Dashboard extends React.Component {
       <div>
         <Header user={this.props.user} />
         <h1>Your medical dashboard </h1>
+        <br/>
+        <div>{typeof this.props.dashboard.resources.Patient !== 'undefined' && this.props.dashboard.resources.Patient.entry.length > 0 ? '' : (
+          <div>
+            <br />
+            <br />
+            <br />
+            Looks like you have no patient data
+            <br />
+            <Link><a href='/'>Connect some health systems</a></Link>
+          </div>
+        )}</div>
         <div>
           {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationDispense"].map(function(resourceType){
             return (<div>

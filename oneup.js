@@ -13,10 +13,10 @@ function getTokenFromAuthCode(code, callback) {
       // never send the body.refrsh_token client side
       // this access token must be refreshed after 2 hours
       callback(body.access_token)
-    } catch (e) {
+    } catch (error) {
       // the auth code may take a second to register, so we can try again
-      console.log('error parsing getTokenFromAuthCode', e, body)
-      callback()
+      console.log('error parsing getTokenFromAuthCode', body, error)
+      getTokenFromAuthCode(code, callback)
     }
   })
 }
@@ -33,15 +33,8 @@ function createOneUpUser (email, callback) {
       console.log(body)
       let oneupUserId = body.oneup_user_id
       getTokenFromAuthCode(body.code, function(access_token) {
-        if (typeof access_token === 'undefined') {
-          getTokenFromAuthCode(body.code, function(access_token) {
-            accessTokenCache[email] = access_token
-            callback(oneupUserId)
-          })
-        } else {
-          accessTokenCache[email] = access_token
-          callback(oneupUserId)
-        }
+        accessTokenCache[email] = access_token
+        callback(oneupUserId)
       })
     }
   })

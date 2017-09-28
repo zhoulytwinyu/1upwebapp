@@ -7,7 +7,7 @@ Example web application built using 1upHealth FHIR, User &amp; Connect APIs
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET="clientsecretclientsecret"
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTID="clientidclientid"
 ```
-2. Update the app configuration with the same client_id to `confi.json`
+2. Update the app configuration with the same client_id to `config.json`
 3. Install & run the app
 ```
 npm install

@@ -2,23 +2,23 @@
 Example web application built using 1upHealth FHIR, User &amp; Connect APIs
 
 ## Quickstart
-Add your API keys
+1. Add your API keys to app server session, ex. `vim ~/.bashrc`
 ```
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET="clientsecretclientsecret"
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTID="clientidclientid"
 ```
-
-Run the app
+2. Update the app configuration with the same client_id to `confi.json`
+3. Install & run the app
 ```
 npm install
 npm run dev
 ```
-Run the email server
+4. Run the email server
 ```
 sudo python -m smtpd -n -c DebuggingServer localhost:25
 ```
 
-## Setup email
+## Optional Setup: Setup email using actual email (relay) server
 Either run a test local server for development
 ```
 sudo python -m smtpd -n -c DebuggingServer localhost:25

@@ -2,13 +2,20 @@
 Example web application built using 1upHealth FHIR, User &amp; Connect APIs
 
 ## Quickstart
-1. Add your API keys to app server session, ex. `vim ~/.bashrc`
+1. Checkout source code from the repo
+```
+cd ~/
+git clone https://github.com/1uphealth/1upwebapp.git
+```
+
+
+2. Add your API keys to app server session, ex. `vim ~/.bashrc`
 ```
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET="clientsecretclientsecret"
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTID="clientidclientid"
 ```
 
-2. Create `config.json` configuration file with the same client_id
+3. Create `config.json` configuration file with the same client_id
 ```
 {
   "baseURL": "http://localhost:3000",
@@ -20,13 +27,13 @@ export ONEUP_DEMOWEBAPPLOCAL_CLIENTID="clientidclientid"
 }
 ```
 
-3. Install & run the app
+4. Install & run the app
 ```
 npm install
 npm run dev
 ```
 
-4. Run the email server
+5. Run the email server
 ```
 sudo python -m smtpd -n -c DebuggingServer localhost:25
 ```

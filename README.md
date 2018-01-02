@@ -7,12 +7,25 @@ Example web application built using 1upHealth FHIR, User &amp; Connect APIs
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET="clientsecretclientsecret"
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTID="clientidclientid"
 ```
-2. Update the app configuration with the same client_id to `config.json`
+
+2. Create `config.json` configuration file with the same client_id
+```
+{
+  "baseURL": "http://localhost:3000",
+  "clientId": "xxxxxxx",
+  "__clientId": "the client id must be hardcoded here because this will be client side",
+  "email": {
+    "sender": "address@demo.com"
+  }
+}
+```
+
 3. Install & run the app
 ```
 npm install
 npm run dev
 ```
+
 4. Run the email server
 ```
 sudo python -m smtpd -n -c DebuggingServer localhost:25

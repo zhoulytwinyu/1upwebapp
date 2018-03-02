@@ -14,14 +14,17 @@ export default class FhirPatient extends React.Component {
         <h3 style={{display: 'inline-block'}}>{this.props.resource.gender} ({this.props.resource.birthDate.slice(0,10)}) MRNs: {this.props.resource.identifier.map(function(identifier){return `${identifier.value}, `})}</h3>
         <table>
           <tbody>
-            <tr>
-              <td><strong>Contact</strong></td>
-              <td>
-                {this.props.resource.telecom.map(function(telecom){
-                  return <FhirElementTelecom {...telecom} />
-                })}
-              </td>
-            </tr>
+            {typeof this.props.resource.telecom === 'undefined' ? '':
+              (<tr>
+                <td><strong>Contact</strong></td>
+                <td>
+                  {this.props.resource.address.map(function(telecom){
+                    return <FhirElementAddress {...telecom} />
+                  })}
+                </td>
+              </tr>)
+            }
+
             {typeof this.props.resource.address === 'undefined' ? '':
               (<tr>
                 <td><strong>Address</strong></td>

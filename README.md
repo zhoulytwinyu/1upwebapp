@@ -2,7 +2,7 @@
 Example web application built using 1upHealth FHIR, User &amp; Connect APIs  
 
 ## Before you start
-Create an application via the [1uphealth devconsole https://1up.health/devconsole](https://1up.health/devconsole) for testing purposes.  Use `http://localhost:3000/callback` for your app's callback url. Make sure you save your client secret as it'll only be shown once.
+Create an application via the 1uphealth devconsole [https://1up.health/devconsole](https://1up.health/devconsole) for testing purposes.  Use `http://localhost:3000/callback` for your app's callback url. Make sure you save your client secret as it'll only be shown once.
 
 ## Quickstart
 1. Checkout source code from the repo

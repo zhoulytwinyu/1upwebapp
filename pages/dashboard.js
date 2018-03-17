@@ -69,7 +69,7 @@ export default class Dashboard extends React.Component {
           </div>
         )}</div>
         <div>
-          {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationDispense"].map(function(resourceType){
+          {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationDispense","Coverage","ExplanationOfBenefit","ReferralRequest"].map(function(resourceType){
             return (<div>
               {this.props.dashboard.resources[resourceType].entry.length > 0 ? <h2>{resourceType}</h2> : ''}
               {this.props.dashboard.resources[resourceType].entry.map(function(resource){

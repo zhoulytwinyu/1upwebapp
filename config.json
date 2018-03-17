@@ -1,6 +1,6 @@
 {
   "baseURL": "http://localhost:3000",
-  "clientId": "xxxxxxx",
+  "clientId": "b77f45ce051e4b5599fe56c360ac9427",
   "__clientId": "the client id must be hardcoded here because this will be client side",
   "email": {
     "sender": "address@demo.com"

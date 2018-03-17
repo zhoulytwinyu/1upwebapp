@@ -4,35 +4,43 @@ const async = require('async');
 const ONEUP_DEMOWEBAPPLOCAL_CLIENTID = process.env.ONEUP_DEMOWEBAPPLOCAL_CLIENTID
 const ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET = process.env.ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET
 let accessTokenCache = {}
+const ROOT_API_URL = `https://api.1up.health`
+const USER_API_URL = `https://api.1up.health`
+const FHIR_API_URL = `https://api.1up.health/fhir`
 
 function getTokenFromAuthCode(code, callback) {
-  request.post(`https://api.1up.health/fhir/oauth2/token?client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}&code=${code}&grant_type=authorization_code`, function(error, response, body) {
+  var postUrl = `${ROOT_API_URL}/fhir/oauth2/token?client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}&code=${code}&grant_type=authorization_code`
+  console.log(postUrl)
+  request.post(postUrl, function(error, response, body) {
+    if(error) {
+      console.log('error',error)
+    }
     try {
-      body = JSON.parse(body)
+      console.log('body',response.statusCode,body,'----')
+      var jsbody = JSON.parse(body)
       console.log('createOneUpUser body2',body)
       // never send the body.refrsh_token client side
       // this access token must be refreshed after 2 hours
-      callback(body.access_token)
+      callback(jsbody.access_token)
     } catch (error) {
       // the auth code may take a second to register, so we can try again
       console.log('error parsing getTokenFromAuthCode', body, error)
-      getTokenFromAuthCode(code, callback)
     }
   })
 }
 
 // create new 1uphealth user
 function createOneUpUser (email, callback) {
-  let url = `https://api.1up.health/user-management/v1/user?app_user_id=${email}&client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}`
+  let url = `${USER_API_URL}/user-management/v1/user?app_user_id=${email}&client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}`
   request.post(url, function(error, response, body) {
     if(error) {
       console.log('Error POSTing to 1up user-management: ', error);
       callback()
     } else {
-      body = JSON.parse(body)
-      console.log(body)
-      let oneupUserId = body.oneup_user_id
-      getTokenFromAuthCode(body.code, function(access_token) {
+      console.log('body',response.statusCode,body,'----', url)
+      let jsbody = JSON.parse(body)
+      let oneupUserId = jsbody.oneup_user_id
+      getTokenFromAuthCode(jsbody.code, function(access_token) {
         accessTokenCache[email] = access_token
         callback(oneupUserId)
       })
@@ -42,9 +50,12 @@ function createOneUpUser (email, callback) {
 
 // check for 1upehealth user
 function getOneUpUserId (email, callback) {
-  request.get(`https://api.1up.health/user-management/v1/user?client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}&app_user_id=${email}`, function(error, response, body) {
-    body = JSON.parse(body)
-    callback(body.oneup_user_id)
+  let getUrl = `${USER_API_URL}/user-management/v1/user?client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}&app_user_id=${email}`
+  console.log(getUrl)
+  request.get(getUrl, function(error, response, body) {
+    console.log('body',response.statusCode,body,'----', getUrl)
+    let jsbody = JSON.parse(body)
+      callback(jsbody.oneup_user_id)
   })
 }
 
@@ -64,40 +75,61 @@ function getOrMakeOneUpUserId (email, callback) {
 }
 
 // gets a fhir resource list for a user
-function getFhirResourceBundle (resourceType, oneupAccessToken, callback) {
-  let url = `https://api.1up.health/fhir/dstu2/${resourceType}`
-  options = {
+function getFhirResourceBundle (apiVersion, resourceType, oneupAccessToken, callback) {
+  let url = `${FHIR_API_URL}/${apiVersion}/${resourceType}`
+  let options = {
     url: url,
     headers: {
       Authorization: `Bearer ${oneupAccessToken}`
     }
   }
   request.get(options, function(error, response, body) {
+    console.log('error', error)
+    console.log('url', url)
+    console.log('body', body)
+    console.log('body',response.statusCode,body,'----', url)
+    try {
+      let jsbody = JSON.parse(body)
+    } catch(e) {
+      console.log('error***********', new Date(), url, options)
+    }
     callback(error, body)
   })
 }
 
-var endpointsToQuery = [
-  'Patient',
-  'Encounter',
-  'Observation',
-  'MedicationDispense',
-  'Condition',
-  'AllergyIntolerance'
+let endpointsToQuery = [
+  {apiVersion: 'stu3', resourceType: 'Patient'},
+  {apiVersion: 'stu3', resourceType: 'Coverage'},
+  {apiVersion: 'stu3', resourceType: 'ExplanationOfBenefit'},
+  {apiVersion: 'stu3', resourceType: 'ReferralRequest'},
+  {apiVersion: 'dstu2', resourceType: 'Patient'},
+  {apiVersion: 'dstu2', resourceType: 'Encounter'},
+  {apiVersion: 'dstu2', resourceType: 'Observation'},
+  {apiVersion: 'dstu2', resourceType: 'MedicationDispense'},
+  {apiVersion: 'dstu2', resourceType: 'Condition'},
+  {apiVersion: 'dstu2', resourceType: 'AllergyIntolerance'}
 ]
 
 function getAllFhirResourceBundles (oneupAccessToken, callback) {
   let responseData = {}
   async.map(
     endpointsToQuery,
-    function(resourceType, callback){
-      getFhirResourceBundle(resourceType, oneupAccessToken, function (error, body) {
+    function(params, callback){
+      getFhirResourceBundle(params.apiVersion, params.resourceType, oneupAccessToken, function (error, body) {
         if(error){
           callback(error)
         } else {
-          body = JSON.parse(body)
-          responseData[resourceType] = body
-          callback(null, body)
+          try{
+            let jsbody = JSON.parse(body)
+            if (typeof responseData[params.resourceType] === 'undefined') {
+              responseData[params.resourceType] = jsbody
+            } else {
+              responseData[params.resourceType].entry = responseData[params.resourceType].entry.concat(jsbody.entry)
+            }
+            callback(null, jsbody)
+          } catch(e) {
+            console.log('error in getFhirResourceBundle', e)
+          }
         }
       })
     },

@@ -14,7 +14,6 @@ export default class FhirPatient extends React.Component {
         <h3 style={{display: 'inline-block'}}>{this.props.resource.gender} ({this.props.resource.birthDate.slice(0,10)}) MRNs: {this.props.resource.identifier.map(function(identifier){return `${identifier.value}, `})}</h3>
         <table>
           <tbody>
-
             {typeof this.props.resource.telecom === 'undefined' ? '':
               (<tr>
                 <td><strong>Contact</strong></td>

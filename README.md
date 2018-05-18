@@ -41,6 +41,9 @@ npm run dev
 sudo python -m smtpd -n -c DebuggingServer localhost:25
 ```
 
+## Test Health Systems
+You can test the demo web app with one of these [FHIR health system accounts](https://1up.health/dev/doc/fhir-test-credentials).
+
 ## Optional Setup: Setup email using actual email (relay) server
 Either run a test local server for development
 ```

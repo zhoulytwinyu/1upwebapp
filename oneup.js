@@ -10,7 +10,7 @@ const FHIR_API_URL = `https://api.1up.health/fhir`
 
 function getTokenFromAuthCode(code, callback) {
   var postUrl = `${ROOT_API_URL}/fhir/oauth2/token?client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}&code=${code}&grant_type=authorization_code`
-  console.log(postUrl)
+ 
   request.post(postUrl, function(error, response, body) {
     if(error) {
       console.log('error',error)
@@ -18,7 +18,7 @@ function getTokenFromAuthCode(code, callback) {
     try {
       console.log('body',response.statusCode,body,'----')
       var jsbody = JSON.parse(body)
-      console.log('createOneUpUser body2',body)
+      console.log('createOneUpUser',body)
       // never send the body.refrsh_token client side
       // this access token must be refreshed after 2 hours
       callback(jsbody.access_token)
@@ -26,6 +26,21 @@ function getTokenFromAuthCode(code, callback) {
       // the auth code may take a second to register, so we can try again
       console.log('error parsing getTokenFromAuthCode', body, error)
     }
+  })
+}
+
+// get the Auth code for existing user
+function getAuthCodeForExistingUser(email, callback){
+  request.post({
+    url : `${ROOT_API_URL}/user-management/v1/user/auth-code?app_user_id=${email}&client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}`
+  }, (error, response , body) => {
+      jsbody = JSON.parse(body)
+      let oneupUserId = jsbody.oneup_user_id
+
+      getTokenFromAuthCode(jsbody.code, function(access_token) {
+      accessTokenCache[email] = access_token
+      callback(oneupUserId)
+      })
   })
 }
 
@@ -37,14 +52,18 @@ function createOneUpUser (email, callback) {
       console.log('Error POSTing to 1up user-management: ', error);
       callback()
     } else {
-      console.log('body',response.statusCode,body,'----', url)
-      let jsbody = JSON.parse(body)
-      let oneupUserId = jsbody.oneup_user_id
-      getTokenFromAuthCode(jsbody.code, function(access_token) {
-        accessTokenCache[email] = access_token
-        callback(oneupUserId)
-      })
-    }
+        console.log('body',response.statusCode,body,'----', url)
+        let jsbody = JSON.parse(body)
+        let oneupUserId = jsbody.oneup_user_id
+        if (jsbody.error === "this user already exists") {
+          getAuthCodeForExistingUser(email, callback);
+        } else {
+            getTokenFromAuthCode(jsbody.code, function(access_token) {
+            accessTokenCache[email] = access_token
+            callback(oneupUserId)
+          })
+        } 
+      }
   })
 }
 

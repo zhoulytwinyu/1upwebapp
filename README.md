@@ -12,10 +12,15 @@ git clone https://github.com/1uphealth/1upwebapp.git
 ```
 
 
-2. Add your API keys to app server session, ex. `vim ~/.bashrc`
+2. Add your API keys to app server session, ex. `vim ~/.bashrc` or `~/.bash_profile`
 ```
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET="clientsecretclientsecret"
 export ONEUP_DEMOWEBAPPLOCAL_CLIENTID="clientidclientid"
+```
+save this
+```
+source ~/.bashrc
+source ~/.bash_profile
 ```
 
 3. Create `config.json` configuration file with the same client_id
@@ -36,7 +41,7 @@ npm install
 npm run dev
 ```
 
-5. Run the email server
+5. Run the email server (python 2.7)
 ```
 sudo python -m smtpd -n -c DebuggingServer localhost:25
 ```

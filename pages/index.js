@@ -1,10 +1,12 @@
 import React from 'react'
-import Link from 'next/prefetch'
-import Header from '../components/header.js'
+import Link from 'next/link'
+import Layout from "../components/layouts/Layout"
+import Header from '../components/Header.js'
 import { authenticate, logout, logoutEvent } from '../utils'
 const config = require('../config.json')
+var createReactClass = require('create-react-class');
 
-var Iframe = React.createClass({
+var Iframe = createReactClass({
   render: function() {
     return(
       <div>
@@ -33,7 +35,7 @@ export default class Home extends React.Component {
 
   render () {
     return (
-      <div>
+      <Layout>
         <Header user={this.props.user} />
         <h1>{`Welcome to 1upHealth's Demo App`}</h1>
         <h2>Link your providers</h2>
@@ -51,7 +53,7 @@ export default class Home extends React.Component {
             list-style: none;
           }
         `}</style>
-      </div>
+      </Layout>
     )
   }
 }

@@ -2,10 +2,12 @@ import React from 'react'
 import Link from 'next/link'
 import fetch from 'isomorphic-fetch'
 import { authenticate, logout, logoutEvent } from '../utils'
-import Header from '../components/header.js'
+import Header from '../components/Header.js'
 import FhirPatient from '../components/fhir/patient.js'
+import FhirResourceJson from '../components/FhirResourceJson.js'
 import FhirAllergyIntolerance from '../components/fhir/allergyintolerance.js'
 import FhirCondition from '../components/fhir/condition.js'
+import Layout from "../components/layouts/Layout"
 
 export default class Dashboard extends React.Component {
   static async getInitialProps ({ req, res }) {
@@ -40,21 +42,12 @@ export default class Dashboard extends React.Component {
     }
   }
   resourceComponent (resourceType, resource) {
-    switch (resourceType){
-      case 'Patient':
-        return <FhirPatient {...resource} />
-      case 'Condition':
-        return <FhirCondition {...resource} />
-      case 'AllergyIntolerance':
-        return <FhirAllergyIntolerance {...resource} />
-      default:
-        return JSON.stringify(resource)
-    }
+    return <FhirResourceJson fhirResource={resource} />
   }
 
   render () {
     return (
-      <div>
+      <Layout>
         <Header user={this.props.user} />
         <h1>Your medical dashboard </h1>
         <br/>
@@ -88,7 +81,7 @@ export default class Dashboard extends React.Component {
             text-align: center;
           }
         `}</style>
-      </div>
+      </Layout>
     )
   }
 }

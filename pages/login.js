@@ -1,6 +1,7 @@
 import React from 'react'
 import 'isomorphic-fetch'
-import Header from '../components/header.js'
+import Header from '../components/Header.js'
+import Layout from "../components/layouts/Layout"
 
 export default class Login extends React.Component {
 
@@ -35,8 +36,10 @@ export default class Login extends React.Component {
 
   welcomeText = () => {
     return (
-      <div style={{width: '400px', display: 'inline-block', textAlign: 'left'}}>
+      <div className="col-sm-12 col-md-6">
         Welcome to the <a href='https://1up.health'>1upHealth</a> Demo App. You can sign in, connect your health systems, and view your medical record. Learn more about the tech behind this app in the <a href='https://github.com/1uphealth/1upwebapp'>git repo</a>.
+        <br/>
+        <br/>
       </div>
     )
   }
@@ -44,34 +47,44 @@ export default class Login extends React.Component {
   render () {
     if (this.state.submitted) {
       return (
-        <div className="cent">
+        <Layout>
           <Header />
+          <div className="container">
+            <br/>
+            <br/>
+            <div className="row">
+              {this.welcomeText()}
+              <div className="col-sm-12 col-md-6">
+                <h3>Check your email. <br/>We sent a magic link to log into your account :)</h3>
+              </div>
+            </div>
+          </div>
           <br/>
           <br/>
-          {this.welcomeText()}
           <br/>
-          <br/>
-          <br/>
-          <h3>Check your email. <br/>We sent a magic link to log into your account :)</h3>
-        </div>
+        </Layout>
       )
     }
 
     return (
-      <div className="cent">
+      <Layout className="cent">
         <form onSubmit={this.onSubmit}>
           <Header />
-          <br/>
-          <br/>
-          {this.welcomeText()}
-          <br/>
-          <br/>
-          <h3>Login using your email :)</h3>
-          <input onChange={this.onEmailChange} value={this.state.email}
-            type='email' required placeholder='your@email.org' autoFocus />
-          <input type='submit' value='Login' />
+          <div className="container">
+            <br/>
+            <br/>
+            <div className="row">
+              {this.welcomeText()}
+              <div className="col-sm-12 col-md-6">
+                <h3>Login using your email :)</h3>
+                <input onChange={this.onEmailChange} value={this.state.email}
+                  type='email' required placeholder='your@email.org' autoFocus />
+                <input type='submit' value='Login' />
+              </div>
+            </div>
+          </div>
         </form>
-      </div>
+      </Layout>
     )
   }
 }

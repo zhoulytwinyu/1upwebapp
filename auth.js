@@ -20,4 +20,26 @@ passwordless.addDelivery((token, uid, recipient, callback) => {
   }, callback)
 })
 
-module.exports = passwordless
+function authUser(req, res, next) {
+  if( typeof req.session !== 'undefined'
+      && Object.keys(req.session).length > 0
+      && typeof req.session.passwordless !== 'undefined'
+      || typeof req.headers.authorization != 'undefined') {
+    req.session.oneup_access_token = oneup.accessTokenCache[req.session.passwordless]
+    if(typeof req.session.oneup_access_token === 'undefined') {
+      if (typeof req.headers.authorization === 'undefined') {
+        res.redirect('/login')
+      } else {
+        req.session.oneup_access_token = req.headers.authorization.split(' ')[1]
+        next()
+      }
+    } else {
+      next()
+    }
+  } else {
+    res.redirect('/login')
+  }
+}
+
+exports.passwordless = passwordless
+exports.authUser = authUser

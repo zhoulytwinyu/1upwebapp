@@ -66,7 +66,7 @@ export default class Dashboard extends React.Component {
         <div>
           {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationStatement", "MedicationOrder", "Coverage","ExplanationOfBenefit","ReferralRequest"].map(function(resourceType){
             return (<div>
-              {resourceType === 'MedicationStatement' ?  <MedicationStatement fhirResource={MedicationStatementFile} thorough={false} /> : ''}
+              {resourceType === 'MedicationStatement' ?  <div><h2>{resourceType}</h2><MedicationStatement fhirResource={MedicationStatementFile} thorough={false} /></div> : ''}
               {this.props.dashboard.resources[resourceType].entry.length > 0 ? <h2>{resourceType}</h2> : ''}
               {this.props.dashboard.resources[resourceType].entry.map(function(resource){
                 return (<div style={{textAlign: 'left', marginTop:'-4px'}}>

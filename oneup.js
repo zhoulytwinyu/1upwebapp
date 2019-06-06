@@ -124,9 +124,7 @@ let endpointsToQuery = [
   {apiVersion: 'dstu2', resourceType: 'Patient'},
   {apiVersion: 'dstu2', resourceType: 'Encounter'},
   {apiVersion: 'dstu2', resourceType: 'Observation'},
-  {apiVersion: 'stu3', resourceType: 'MedicationDispense'},
-  {apiVersion: 'stu3', resourceType: 'MedicationStatement'},
-  {apiVersion: 'stu3', resourceType: 'MedicationOrder'},
+  {apiVersion: 'dstu2', resourceType: 'MedicationDispense'},
   {apiVersion: 'dstu2', resourceType: 'Condition'},
   {apiVersion: 'dstu2', resourceType: 'AllergyIntolerance'}
 ]

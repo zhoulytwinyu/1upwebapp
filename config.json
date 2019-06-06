@@ -1,8 +1,8 @@
 {
   "baseURL": "http://localhost:3000",
-  "clientId": "96aad3948f2948ec9633b3ffad443ad2",
+  "clientId": "insert_client_id",
   "__clientId": "the client id must be hardcoded in the clientId field above because the value will also be used on client app where environmental variables will not be accessible",
   "email": {
-    "sender": "sirwal.v@husky.neu.edu"
+    "sender": "address@demo.com"
   }
 }

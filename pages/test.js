@@ -13,7 +13,7 @@ export default class Home extends React.Component {
         <Header user={this.props.user} />
         <div className='container'>
           <h1>{`Testing`}</h1>
-          <Resources.Patient fhirResource={dstu2Patient.entry[0].resource} thorough={false}/>
+          <Resources.Patient jsonOpen={true} fhirResource={dstu2Patient.entry[0].resource} thorough={false}/>
           {dstu2Encounter.entry.map(function(Encounter){
             return JSON.stringify(dstu2Encounter, null, 2)
           })}

@@ -16,21 +16,24 @@ export default class Header extends React.Component {
   render () {
     return (
       <header>
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="">1upHealth</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggsler-icon"></span>
           </button>
-          <Link href='/'>Connect Data</Link>&nbsp;
-          <strong>{
-            typeof this.props.user === 'undefined' ?
-            <Link href='/login'>Login</Link> :
-            (<span><span>{this.props.user.email}</span> <a href='/logout' onClick={logout}>logout</a></span>)}
-          </strong>
-
-          <div className="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item active">
-                <a className="nav-link" href="#"><strong>&#x25c0;</strong><span className="sr-only">(current)</span></a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href=""><Link href='/'>Connect Data</Link>&nbsp; <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="">{
+                  typeof this.props.user === 'undefined' ?
+                  <Link href='/login'>Login</Link> :
+                  (<span><span>{this.props.user.email}</span> <a href='/logout' onClick={logout}>logout</a></span>)}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href=""><Link href='/test'>Test</Link>&nbsp; </a>
               </li>
             </ul>
           </div>

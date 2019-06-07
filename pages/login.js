@@ -36,11 +36,14 @@ export default class Login extends React.Component {
 
   welcomeText = () => {
     return (
-      <div className="col-sm-12 col-md-6">
-        Welcome to the <a href='https://1up.health'>1upHealth</a> Demo App. You can sign in, connect your health systems, and view your medical record. Learn more about the tech behind this app in the <a href='https://github.com/1uphealth/1upwebapp'>git repo</a>.
-        <br/>
-        <br/>
+      <div class="container">
+        <div class="jumbotron">
+          <h1>Welcome to the <a href='https://1up.health'>1upHealth</a> Demo App.</h1>
+          <p>You can sign in, connect your health systems, and view your medical record. Learn more about the tech behind this app in the <a href='https://github.com/1uphealth/1upwebapp'>git repo</a>.
+          </p>
+        </div>
       </div>
+
     )
   }
 
@@ -54,8 +57,8 @@ export default class Login extends React.Component {
             <br/>
             <div className="row">
               {this.welcomeText()}
-              <div className="col-sm-12 col-md-6">
-                <h3>Check your email. <br/>We sent a magic link to log into your account :)</h3>
+              <div className="container  text-center">
+                <h1>Check your email. <br/>We sent a magic link to log into your account :)</h1>
               </div>
             </div>
           </div>
@@ -68,24 +71,24 @@ export default class Login extends React.Component {
 
     return (
       <Layout className="cent">
-        <form onSubmit={this.onSubmit}>
           <Header />
           <div className="container">
             <br/>
             <br/>
-            <div className="row">
+            <div className="row text-center">
               {this.welcomeText()}
-              <div className="col-sm-12 col-md-6">
-                <h3>Login using your email :)</h3>
-                <input onChange={this.onEmailChange} value={this.state.email}
-                  type='email' required placeholder='your@email.org' autoFocus />
-                <input type='submit' value='Login' />
+              <div className="container">
+                <form onSubmit={this.onSubmit}>
+                  <h3>Login using your email</h3>
+                  <input onChange={this.onEmailChange} value={this.state.email}
+                    type='email' class="form-control "   required placeholder='your@email.org' autoFocus />
+                    <br/>
+                  <input type='submit' class="btn btn-info"  value='Login' />
+                </form>
               </div>
             </div>
-          </div>
-          
-        </form>
 
+          </div>
       </Layout>
     )
   }

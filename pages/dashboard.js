@@ -8,7 +8,7 @@ import FhirResourceJson from '../components/FhirResourceJson.js'
 import FhirAllergyIntolerance from '../components/fhir/allergyintolerance.js'
 import FhirCondition from '../components/fhir/condition.js'
 import Layout from "../components/layouts/Layout";
-import {Fancy, TodoList, Patient, Resources, MedicationStatement} from 'fhir-react';
+import {Fancy, TodoList, Patient, Resources} from 'fhir-react';
 import MedicationStatementFile from "../tests/fixtures/stu3/MedicationStatement.js";
 
 export default class Dashboard extends React.Component {
@@ -66,7 +66,6 @@ export default class Dashboard extends React.Component {
         <div>
           {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationStatement", "MedicationOrder", "Coverage","ExplanationOfBenefit","ReferralRequest"].map(function(resourceType){
             return (<div>
-              {resourceType === 'MedicationStatement' ?  <div><h2>{resourceType}</h2><MedicationStatement fhirResource={MedicationStatementFile} thorough={false} /></div> : ''}
               {this.props.dashboard.resources[resourceType].entry.length > 0 ? <h2>{resourceType}</h2> : ''}
               {this.props.dashboard.resources[resourceType].entry.map(function(resource){
                 return (<div style={{textAlign: 'left', marginTop:'-4px'}}>

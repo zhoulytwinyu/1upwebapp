@@ -1,22 +1,45 @@
 import Link from 'next/link'
+import React from 'react'
 
 export default class FhirResourceJson extends React.Component {
   constructor () {
     super();
   }
-
   render() {
+
+    let componentType ;
+    if(this.props.fhirResource.resource.resourceType==="Patient"){
+      componentType = <Patient patientProps={this.props.fhirResource.resource.resourceType}/>
+    }else{
+      componentType = <JsonFormater fhirResource={this.props.fhirResource}/>
+    }
     return (
-      <div className='bg-light card mb-3'>
+      <div className='bg-light card mb-6'>
         <div class="card-header">{this.props.fhirResource.resource.resourceType}</div>
         <div class="card-body">
-          <code>
-            <pre>
-              {JSON.stringify(this.props.fhirResource, null, 2)}
-            </pre>
-          </code>
+        {componentType}
         </div>
       </div>
     )
   }
+}
+class Patient extends React.Component {
+   render() {
+      return (
+         <div>
+            <h1>lol</h1>
+         </div>
+      );
+   }
+}
+class JsonFormater extends React.Component {
+   render() {
+      return (
+        <code>
+          <pre>
+            {JSON.stringify(this.props.fhirResource, null, 2)}
+          </pre>
+        </code>
+      );
+   }
 }

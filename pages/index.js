@@ -37,14 +37,19 @@ export default class Home extends React.Component {
     return (
       <Layout>
         <Header user={this.props.user} />
-        <h1>{`Welcome to 1upHealth's Demo App`}</h1>
-        <h2>Link your providers</h2>
+        <div class="text-center">
+          <h1>{`Welcome to 1upHealth's Demo App`}</h1>
+          <h2 class="text-center">Link your providers</h2>
+        </div>
         <iframe
           style={{border:'0px solid #fff'}}
           src={`https://api.1up.health/connect/marketplace?client_id=${config.clientId}&access_token=${this.props.user.oneup_access_token}`}
           height={500}
           width='100%'/>
-        <Link href='/dashboard'>Go to your medical dashboard</Link>
+          <br/>
+        <div class="text-center">
+          <Link href='/dashboard'><h3>Go to your medical dashboard</h3></Link>
+        </div>
         <style jsx>{`
           div {
             text-align: center;

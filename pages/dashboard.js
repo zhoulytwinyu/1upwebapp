@@ -7,7 +7,10 @@ import FhirPatient from '../components/fhir/patient.js'
 import FhirResourceJson from '../components/FhirResourceJson.js'
 import FhirAllergyIntolerance from '../components/fhir/allergyintolerance.js'
 import FhirCondition from '../components/fhir/condition.js'
-import Layout from "../components/layouts/Layout"
+import Layout from "../components/layouts/Layout";
+import {Fancy, TodoList, Patient, Resources, MedicationStatement, MedicationOrder} from 'fhir-react';
+import MedicationStatementFile from "../tests/fixtures/stu3/MedicationStatement.js";
+import MedicationOrderFile from "../tests/fixtures/dstu2/MedicationOrder.js";
 
 export default class Dashboard extends React.Component {
   static async getInitialProps ({ req, res }) {
@@ -62,8 +65,11 @@ export default class Dashboard extends React.Component {
           </div>
         )}</div>
         <div>
-          {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationDispense","Coverage","ExplanationOfBenefit","ReferralRequest"].map(function(resourceType){
+          {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationStatement", "MedicationOrder", "Coverage","ExplanationOfBenefit","ReferralRequest"].map(function(resourceType){
             return (<div>
+              {this.props.MedicationOrderFile}
+              {resourceType === 'MedicationOrder' ?  <div><h2>{resourceType}</h2><MedicationOrder fhirResource={MedicationOrderFile} thorough={false} /></div> : ''}
+              {resourceType === 'MedicationStatement' ?  <div><h2>{resourceType}</h2><MedicationStatement fhirResource={MedicationStatementFile} thorough={false} /></div> : ''}
               {this.props.dashboard.resources[resourceType].entry.length > 0 ? <h2>{resourceType}</h2> : ''}
               {this.props.dashboard.resources[resourceType].entry.map(function(resource){
                 return (<div style={{textAlign: 'left', marginTop:'-4px'}}>

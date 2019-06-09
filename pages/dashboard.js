@@ -69,9 +69,7 @@ export default class Dashboard extends React.Component {
               return (<div>
                 {this.props.dashboard.resources[resourceType].entry.length > 0 ? <h2>{resourceType}</h2> : ''}
                 {this.props.dashboard.resources[resourceType].entry.map(function(resourceContainer){
-                  if (typeof Resources[resourceType] !== 'undefined') {
-                    return (<FhirResource fhirResource={resourceContainer.resource} />)
-                  }
+                  return (<FhirResource fhirResource={resourceContainer.resource} />)
                 }.bind(this))}
               <br />
               </div>)

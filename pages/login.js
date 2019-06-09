@@ -37,7 +37,7 @@ export default class Login extends React.Component {
   welcomeText = () => {
     return (
       <div class="container">
-        <div class="jumbotron">
+        <div class="jumbotron bg-light">
           <h1>Welcome to the <a href='https://1up.health'>1upHealth</a> Demo App.</h1>
           <p>You can sign in, connect your health systems, and view your medical record. Learn more about the tech behind this app in the <a href='https://github.com/1uphealth/1upwebapp'>git repo</a>.
           </p>
@@ -81,9 +81,15 @@ export default class Login extends React.Component {
                 <form onSubmit={this.onSubmit}>
                   <h3>Login using your email</h3>
                   <input onChange={this.onEmailChange} value={this.state.email}
-                    type='email' class="form-control "   required placeholder='your@email.org' autoFocus />
-                    <br/>
-                  <input type='submit' class="btn btn-info"  value='Login' />
+                    type='email'
+                    className="form-control col-sm-4"
+                    required
+                    placeholder='email@domain.org'
+                    autoFocus
+                    style={{display:'unset'}}
+                  />
+                  <br/>
+                  <input type='submit' class="btn btn-primary col-sm-4 mt-2"  value='Login' />
                 </form>
               </div>
             </div>

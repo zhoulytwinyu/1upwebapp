@@ -15,8 +15,8 @@ export default class FhirResourceJson extends React.Component {
     }
     return (
       <div className='bg-light card mb-6'>
-        <div class="card-header">{this.props.fhirResource.resource.resourceType}</div>
-        <div class="card-body">
+        <div className="card-header">{this.props.fhirResource.resource.resourceType}</div>
+        <div className="card-body">
         {componentType}
         </div>
       </div>

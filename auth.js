@@ -9,7 +9,6 @@ const smtpServer = email.server.connect(config.emailServer)
 passwordless.init(new MemoryStore(), {skipForceSessionSave:true})
 passwordless.addDelivery((token, uid, recipient, callback) => {
   console.log('recipient', recipient)
-  console.log('token url', `${config.baseURL}/?token=${token}&uid=${uid}`)
   oneup.getOrMakeOneUpUserId(recipient, function(oneupUserId){})
   smtpServer.send({
     text: `Welcome to the 1upHealth Demo! Click this link to login \n\n\n\n${config.baseURL}/?token=${token}&uid=${uid} \n\n`,
@@ -17,7 +16,12 @@ passwordless.addDelivery((token, uid, recipient, callback) => {
     from: config.email.sender,
     to: recipient,
     subject: '1upHealth demo login token'
-  }, callback)
+  }, function(err, message) {
+    if(err) {
+      console.log(`could not send email, here's the token url`)
+      console.log('token url', `${config.baseURL}/?token=${token}&uid=${uid}`)
+    }
+  })
 })
 
 function authUser(req, res, next) {

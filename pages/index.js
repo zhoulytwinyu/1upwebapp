@@ -37,9 +37,9 @@ export default class Home extends React.Component {
     return (
       <Layout>
         <Header user={this.props.user} />
-        <div class="text-center">
+        <div className="text-center">
           <h1>{`Welcome to 1upHealth's Demo App`}</h1>
-          <h2 class="text-center">Link your providers</h2>
+          <h2 className="text-center">Link your providers</h2>
         </div>
         <iframe
           style={{border:'0px solid #fff'}}
@@ -47,7 +47,7 @@ export default class Home extends React.Component {
           height={500}
           width='100%'/>
           <br/>
-        <div class="text-center">
+        <div className="text-center">
           <Link href='/dashboard'><h3>Go to your medical dashboard</h3></Link>
         </div>
         <style jsx>{`

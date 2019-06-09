@@ -11,7 +11,7 @@ module.exports = withSass({
 
       // Read the .env file
       new Dotenv({
-        path: path.join(__dirname, "config", "client", ".json"),
+        path: path.join(__dirname, "config.json"),
         systemvars: true,
       }),
     ]

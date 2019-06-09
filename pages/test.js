@@ -13,10 +13,10 @@ export default class Home extends React.Component {
       <Layout>
         <Header user={this.props.user} />
         <div className='container'>
-          <h1 class="text-center">Patient</h1>
+          <h1 className="text-center">Patient</h1>
           <FhirResource fhirResource={dstu2Patient.entry[0].resource} thorough={false}/>
 
-          <h1 class="text-center">Encounter</h1>
+          <h1 className="text-center">Encounter</h1>
           {dstu2Encounter.entry.map(function(eachEncounter){
             return <Resources.Encounter fhirResource={eachEncounter.resource} thorough={false}/>
           })}

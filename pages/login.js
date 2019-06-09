@@ -36,8 +36,8 @@ export default class Login extends React.Component {
 
   welcomeText = () => {
     return (
-      <div class="container">
-        <div class="jumbotron bg-light">
+      <div className="container">
+        <div className="jumbotron bg-light">
           <h1>Welcome to the <a href='https://1up.health'>1upHealth</a> Demo App.</h1>
           <p>You can sign in, connect your health systems, and view your medical record. Learn more about the tech behind this app in the <a href='https://github.com/1uphealth/1upwebapp'>git repo</a>.
           </p>
@@ -89,7 +89,7 @@ export default class Login extends React.Component {
                     style={{display:'unset'}}
                   />
                   <br/>
-                  <input type='submit' class="btn btn-primary col-sm-4 mt-2"  value='Login' />
+                  <input type='submit' className="btn btn-primary col-sm-4 mt-2"  value='Login' />
                 </form>
               </div>
             </div>

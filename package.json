@@ -17,18 +17,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rafaelsorto/youfirst-insurance-next.git"
+    "url": "git+https://github.com/1uphealth/1upwebapp.git"
   },
   "keywords": [
     "YouFirst",
     "Insurance"
   ],
-  "author": "Rafael Sorto <rafael.sorto@gmail.com>",
+  "author": "1upHealth (eng@1up.health)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rafaelsorto/youfirst-insurance-next/issues"
+    "url": "https://github.com/1uphealth/1upwebapp/issues"
   },
-  "homepage": "https://github.com/rafaelsorto/youfirst-insurance-next#readme",
+  "homepage": "https://github.com/1uphealth/1upwebapp#readme",
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
     "async": "^2.5.0",
@@ -43,7 +43,7 @@
     "emailjs": "1.0.8",
     "express": "^4.16.4",
     "express-session": "1.14.2",
-    "fhir-react": "file:../fhir-react",
+    "fhir-react": "0.0.3",
     "isomorphic-fetch": "^2.2.1",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^8.1.0",

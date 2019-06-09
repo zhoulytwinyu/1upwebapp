@@ -19,7 +19,7 @@ passwordless.addDelivery((token, uid, recipient, callback) => {
   }, function(err, message) {
     if(err) {
       console.log(`could not send email, here's the token url`)
-      console.log('token url', `${config.baseURL}/?token=${token}&uid=${uid}`)
+      console.log('\ntoken url', `${config.baseURL}/?token=${token}&uid=${uid}\n`)
     }
   })
 })

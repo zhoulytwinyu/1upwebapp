@@ -3,10 +3,6 @@ import Link from 'next/link'
 import fetch from 'isomorphic-fetch'
 import { authenticate, logout, logoutEvent } from '../utils'
 import Header from '../components/Header.js'
-import FhirPatient from '../components/fhir/patient.js'
-import FhirResourceJson from '../components/FhirResourceJson.js'
-import FhirAllergyIntolerance from '../components/fhir/allergyintolerance.js'
-import FhirCondition from '../components/fhir/condition.js'
 import Layout from "../components/layouts/Layout";
 import {Fancy, TodoList, FhirResource, Patient, Resources} from 'fhir-react'
 
@@ -41,9 +37,6 @@ export default class Dashboard extends React.Component {
       window.localStorage.remove('email')
       window.localStorage.remove('oneup_access_token')
     }
-  }
-  resourceComponent (resourceType, resource) {
-    return <FhirResourceJson fhirResource={resource} />
   }
 
   render () {

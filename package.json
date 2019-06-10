@@ -1,7 +1,7 @@
 {
-  "name": "passauth",
+  "name": "1uphealth-demo-web-app",
   "version": "1.0.0",
-  "description": "Pass Auth",
+  "description": "1upHealth Web App",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",

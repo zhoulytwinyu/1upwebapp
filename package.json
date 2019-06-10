@@ -20,8 +20,8 @@
     "url": "git+https://github.com/1uphealth/1upwebapp.git"
   },
   "keywords": [
-    "YouFirst",
-    "Insurance"
+    "1upHealth",
+    "FHIR"
   ],
   "author": "1upHealth (eng@1up.health)",
   "license": "MIT",

@@ -23,11 +23,11 @@ source ~/.bashrc
 source ~/.bash_profile
 ```
 **For Windows:** - Add your API keys as Environment Variables. 
-1. In Search, search for and then select: System (Control Panel)
-1. Click the Advanced system settings link.
-1. Click Environment Variables.
-1. In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable.
-1. Reopen Command prompt window, and run your code. 
+- In Search, search for and then select: System (Control Panel)
+- Click the Advanced system settings link.
+- Click Environment Variables.
+- In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable.
+- Reopen Command prompt window, and run your code. 
 
 3. Create `config.json` configuration file with the same client_id
 ```

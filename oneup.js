@@ -1,3 +1,4 @@
+exports.getAllFhirResourceBundles = getAllFhirResourceBundles
 // utilities to interface with the 1uphealth api servers side
 const request = require('request')
 const async = require('async');
@@ -7,6 +8,42 @@ let accessTokenCache = {}
 const ROOT_API_URL = `https://api.1up.health`
 const USER_API_URL = `https://api.1up.health`
 const FHIR_API_URL = `https://api.1up.health/fhir`
+
+function getAllUrlParams(url) {
+  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+  var obj = {};
+  if (queryString) {
+    queryString = queryString.split('#')[0];
+    var arr = queryString.split('&');
+    for (var i = 0; i < arr.length; i++) {
+      var a = arr[i].split('=');
+      var paramName = a[0];
+      var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+      paramName = paramName.toLowerCase();
+      if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+      if (paramName.match(/\[(\d+)?\]$/)) {
+        var key = paramName.replace(/\[(\d+)?\]/, '');
+        if (!obj[key]) obj[key] = [];
+        if (paramName.match(/\[\d+\]$/)) {
+          var index = /\[(\d+)\]/.exec(paramName)[1];
+          obj[key][index] = paramValue;
+        } else {
+          obj[key].push(paramValue);
+        }
+      } else {
+        if (!obj[paramName]) {
+          obj[paramName] = paramValue;
+        } else if (obj[paramName] && typeof obj[paramName] === 'string'){
+          obj[paramName] = [obj[paramName]];
+          obj[paramName].push(paramValue);
+        } else {
+          obj[paramName].push(paramValue);
+        }
+      }
+    }
+  }
+  return obj;
+}
 
 function getTokenFromAuthCode(code, callback) {
   var postUrl = `${ROOT_API_URL}/fhir/oauth2/token?client_id=${ONEUP_DEMOWEBAPPLOCAL_CLIENTID}&client_secret=${ONEUP_DEMOWEBAPPLOCAL_CLIENTSECRET}&code=${code}&grant_type=authorization_code`
@@ -94,8 +131,8 @@ function getOrMakeOneUpUserId (email, callback) {
 }
 
 // gets a fhir resource list for a user
-function getFhirResourceBundle (apiVersion, resourceType, oneupAccessToken, callback) {
-  let url = `${FHIR_API_URL}/${apiVersion}/${resourceType}`
+function getFhirResourceBundle (apiVersion, resourceType, oneupAccessToken, afterid, jsonData, callback) {
+  let url = `${FHIR_API_URL}/${apiVersion}/${resourceType}/?_afterid=${afterid}`
   let options = {
     url: url,
     headers: {
@@ -103,22 +140,41 @@ function getFhirResourceBundle (apiVersion, resourceType, oneupAccessToken, call
     }
   }
   request.get(options, function(error, response, body) {
-    console.log('error', error)
-    console.log('url', url)
-    console.log('body', body)
+    // console.log('error', error)
+    // console.log('url', url)
+    // console.log('body', body)
     if (error) {
 
     } else {
-      console.log('body',response.statusCode,body,'----', url)
+      if(afterid==0){
+        jsonData=JSON.parse(body)
+        delete jsonData.link
+      } else{
+        jsonData.entry.push(...(JSON.parse(body).entry))
+      }
+      // console.log('body',response.statusCode,body,'----', url)
       try {
-        let jsbody = JSON.parse(body)
+        var jsbody = JSON.parse(body)
+        console.log('this is link ->', jsbody.link);
+        if (jsbody.link) {
+          console.log('info: ',apiVersion, resourceType, oneupAccessToken, getAllUrlParams(jsbody.link[1].url)._afterid);
+          getFhirResourceBundle(apiVersion, resourceType, oneupAccessToken, getAllUrlParams(jsbody.link[1].url)._afterid, jsonData, callback)
+        }else{
+          console.log("callbackcalled", jsonData.entry.length, jsonData);
+          callback(null,jsonData)
+        }
       } catch(e) {
         console.log('error***********', new Date(), url, options)
-      }      
+      }
     }
-    callback(error, body)
+    // if(!jsbody.link){
+    //   callback(error, jsbody)
+    // }
   })
 }
+
+//run getFhirResourceBundle for all the resources 
+
 
 let endpointsToQuery = [
   {apiVersion: 'stu3', resourceType: 'Patient'},
@@ -137,22 +193,27 @@ let endpointsToQuery = [
 ]
 
 function getAllFhirResourceBundles (oneupAccessToken, callback) {
+  var jsbody;
   let responseData = {}
   async.map(
     endpointsToQuery,
-    function(params, callback){
-      getFhirResourceBundle(params.apiVersion, params.resourceType, oneupAccessToken, function (error, body) {
+    function(params, asyncMapCallback){
+      getFhirResourceBundle(params.apiVersion, params.resourceType, oneupAccessToken, afterid="0", jsonData = {},function (error, body) {
         if(error){
-          callback(error)
+          asyncMapCallback(error, null)
         } else {
           try{
-            let jsbody = JSON.parse(body)
+            if(typeof body){
+              jsbody = body
+            }else{
+              jsbody = JSON.parse(body)
+            }
             if (typeof responseData[params.resourceType] === 'undefined') {
               responseData[params.resourceType] = jsbody
             } else {
               responseData[params.resourceType].entry = responseData[params.resourceType].entry.concat(jsbody.entry)
             }
-            callback(null, jsbody)
+            asyncMapCallback(null, responseData)
           } catch(e) {
             console.log('error in getFhirResourceBundle', e)
           }
@@ -160,6 +221,7 @@ function getAllFhirResourceBundles (oneupAccessToken, callback) {
       })
     },
     function(error, body){
+      console.log('hello this is responseData', responseData)
       if(error){
         callback(error)
       } else {

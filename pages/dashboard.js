@@ -58,12 +58,12 @@ export default class Dashboard extends React.Component {
             </div>
           )}</div>
           <div style={{textAlign:'left'}}>
-            {["Patient","Condition","AllergyIntolerance","Encounter","Observation","MedicationStatement", "MedicationOrder", "Coverage","ExplanationOfBenefit","ReferralRequest"].map(function(resourceType){
+            {["Patient","Practitioner","AllergyIntolerance","MedicationOrder","MedicationStatement","Condition","Observation","FamilyMemberHistory","DiagnosticReport","Immunization","Encounter","CarePlan","Goal","Procedure","Device","DocumentReference","Binary"].map(function(resourceType){
               return (<div>
-                {this.props.dashboard.resources[resourceType].entry.length > 0 ? <h2>{resourceType}</h2> : ''}
-                {this.props.dashboard.resources[resourceType].entry.map(function(resourceContainer){
+                {typeof this.props.dashboard.resources[resourceType] != 'undefined' && this.props.dashboard.resources[resourceType].entry.length > 0 ? <h1>{resourceType}</h1> : ''}
+                {typeof this.props.dashboard.resources[resourceType] != 'undefined' ?  this.props.dashboard.resources[resourceType].entry.map(function(resourceContainer){
                   return (<FhirResource fhirResource={resourceContainer.resource} />)
-                }.bind(this))}
+                }.bind(this)):''}
               <br />
               </div>)
             }.bind(this))}

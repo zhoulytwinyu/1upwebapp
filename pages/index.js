@@ -43,7 +43,7 @@ export default class Home extends React.Component {
         </div>
         <iframe
           style={{border:'0px solid #fff'}}
-          src={`https://api.1up.health/connect/marketplace?client_id=${config.clientId}&access_token=${this.props.user.oneup_access_token}`}
+          src={`https://system-search.1up.health/search/?access_token=${this.props.user.oneup_access_token}`}
           height={500}
           width='100%'/>
           <br/>
